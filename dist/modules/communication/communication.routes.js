@@ -1,0 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const communication_controller_1 = require("./communication.controller");
+const auth_middleware_1 = require("../../middleware/auth.middleware");
+const router = (0, express_1.Router)();
+router.use(auth_middleware_1.authenticateToken);
+router.use(auth_middleware_1.requireSuperAdmin);
+router.get('/', communication_controller_1.getAnnouncements);
+router.post('/', communication_controller_1.createAnnouncement);
+router.delete('/:id', communication_controller_1.removeAnnouncement);
+exports.default = router;

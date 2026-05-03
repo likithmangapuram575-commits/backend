@@ -1,0 +1,14 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const course_controller_1 = require("./course.controller");
+const auth_middleware_1 = require("../../middleware/auth.middleware");
+const audit_middleware_1 = require("../../middleware/audit.middleware");
+const router = (0, express_1.Router)();
+router.use(auth_middleware_1.authenticateToken);
+router.use(auth_middleware_1.requireSuperAdmin);
+router.get('/', course_controller_1.getCourses);
+router.post('/', (0, audit_middleware_1.auditLog)('CREATE', 'courses'), course_controller_1.createCourse);
+router.put('/:id', (0, audit_middleware_1.auditLog)('UPDATE', 'courses'), course_controller_1.editCourse);
+router.delete('/:id', (0, audit_middleware_1.auditLog)('DELETE', 'courses'), course_controller_1.removeCourse);
+exports.default = router;

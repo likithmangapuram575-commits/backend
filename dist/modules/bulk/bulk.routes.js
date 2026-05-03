@@ -1,0 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const bulk_controller_1 = require("./bulk.controller");
+const auth_middleware_1 = require("../../middleware/auth.middleware");
+const audit_middleware_1 = require("../../middleware/audit.middleware");
+const router = (0, express_1.Router)();
+router.use(auth_middleware_1.authenticateToken);
+router.use(auth_middleware_1.requireSuperAdmin);
+router.post('/students', (0, audit_middleware_1.auditLog)('IMPORT', 'students'), bulk_controller_1.uploadStudents);
+router.post('/faculty', (0, audit_middleware_1.auditLog)('IMPORT', 'faculty'), bulk_controller_1.uploadFaculty);
+exports.default = router;

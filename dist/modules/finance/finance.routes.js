@@ -1,0 +1,14 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const finance_controller_1 = require("./finance.controller");
+const auth_middleware_1 = require("../../middleware/auth.middleware");
+const audit_middleware_1 = require("../../middleware/audit.middleware");
+const router = (0, express_1.Router)();
+router.use(auth_middleware_1.authenticateToken);
+router.use(auth_middleware_1.requireSuperAdmin);
+router.get('/', finance_controller_1.getFees);
+router.post('/', (0, audit_middleware_1.auditLog)('CREATE', 'fees_structure'), finance_controller_1.createFees);
+router.put('/:id', (0, audit_middleware_1.auditLog)('UPDATE', 'fees_structure'), finance_controller_1.editFees);
+router.delete('/:id', (0, audit_middleware_1.auditLog)('DELETE', 'fees_structure'), finance_controller_1.removeFees);
+exports.default = router;

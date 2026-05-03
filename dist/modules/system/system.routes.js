@@ -1,0 +1,13 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const system_controller_1 = require("./system.controller");
+const auth_middleware_1 = require("../../middleware/auth.middleware");
+const router = (0, express_1.Router)();
+router.use(auth_middleware_1.authenticateToken);
+router.use(auth_middleware_1.requireSuperAdmin);
+router.get('/calendar', system_controller_1.getCalendar);
+router.post('/calendar', system_controller_1.createCalendarEvent);
+router.delete('/calendar/:id', system_controller_1.removeCalendarEvent);
+router.get('/logs', system_controller_1.getLogs);
+exports.default = router;

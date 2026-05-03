@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const settings_controller_1 = require("./settings.controller");
+const auth_middleware_1 = require("../../middleware/auth.middleware");
+const upload_middleware_1 = require("../../middleware/upload.middleware");
+const audit_middleware_1 = require("../../middleware/audit.middleware");
+const router = (0, express_1.Router)();
+router.get('/', settings_controller_1.getSystemSettings);
+router.put('/', auth_middleware_1.authenticateToken, auth_middleware_1.requireSuperAdmin, upload_middleware_1.upload.single('logo'), (0, audit_middleware_1.auditLog)('UPDATE', 'settings'), settings_controller_1.updateSystemSettings);
+exports.default = router;
